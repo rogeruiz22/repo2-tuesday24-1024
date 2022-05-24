@@ -1,0 +1,24 @@
+name: 'File Copy'
+description: 'whatever description here'
+
+inputs:
+  destinationFolder: # path
+    description: 'The folder to copy the files to'
+    required: true
+    dafult: '~'
+    
+outputs:
+  copied-files:
+    description: 'Number of files copied'
+    value: ${{ steps.random-number-generator.outputs.filesNo }}
+
+runs:
+  using: 'composite'
+  steps:
+    - run: ${{ github.action_path }}/doSomething.sh
+      shell: bash
+    - id: random-number-generator
+      run: echo "::set-output name=filesNo::$(echo $RANDOM)"
+      shell: bash
+    - run: ${{ github.action_path }}/copyFiles.sh
+      shell: bash
